@@ -16,6 +16,49 @@ var bio = {
 	"skills": ["Java", "HTML", "JavaScript", "C"]
 };
 
+bio.display = function () {
+    var formattedName = HTMLheaderName.replace("%data%", bio.name);
+    var formattedRole = HTMLheaderRole.replace("%data%", bio.role);
+
+    var formattedMobile = HTMLmobile.replace("%data%", bio.contacts.mobile);
+    var formattedEmail = HTMLemail.replace("%data%", bio.contacts.eMail);
+    var formattedTwitter = HTMLtwitter.replace("%data%", bio.contacts.twitter);
+    var formattedGithub = HTMLgithub.replace("%data%", bio.contacts.githubURL);
+    var formattedBlog = HTMLblog.replace("%data%", bio.contacts.blogURL);
+    var formattedLocation = HTMLlocation.replace("%data%", bio.contacts.location);
+
+    var formattedPictureURL = HTMLbioPic.replace("%data%", bio.pictureURL);
+    var formattedWelcomeMessage = HTMLwelcomeMsg.replace("%data%", bio.welcomeMessage);
+
+    $("#header").prepend(formattedWelcomeMessage);
+    $("#header").prepend(formattedPictureURL);
+
+
+    $("#header").prepend(formattedRole);
+    $("#header").prepend(formattedName);
+
+    $("#topContacts").append(formattedMobile);
+    $("#topContacts").append(formattedEmail);
+    $("#topContacts").append(formattedGithub);
+    $("#topContacts").append(formattedTwitter);
+    $("#topContacts").append(formattedBlog);
+    $("#topContacts").append(formattedLocation);
+
+    $("#footerContacts").append(formattedMobile);
+    $("#footerContacts").append(formattedEmail);
+    $("#footerContacts").append(formattedGithub);
+    $("#footerContacts").append(formattedTwitter);
+    $("#footerContacts").append(formattedBlog);
+    $("#footerContacts").append(formattedLocation);
+
+    if (bio.skills.length > 0) {
+        $("#header").append(HTMLskillsStart);
+        for (index in bio.skills) {
+            $("#skills").append(HTMLskills.replace("%data%", bio.skills[index]));
+        }
+    }
+}
+
 var work = {
     "jobs": [
         {
@@ -40,6 +83,28 @@ var work = {
     ]
 }
 
+work.display = function() {
+    if (work.jobs.length > 0) {
+        for (job in work.jobs) {
+            $("#workExperience").append(HTMLworkStart);
+            var formattedEmployer = HTMLworkEmployer.replace("%data%", work.jobs[job].employer);
+            var formattedTitle =  HTMLworkTitle.replace("%data%", work.jobs[job].title);
+            var formattedEmployerTitle = formattedEmployer + formattedTitle;
+
+            var formattedWorkDates = HTMLworkDates.replace("%data%", work.jobs[job].dates);
+            var formattedWorkLocation =  HTMLworkLocation.replace("%data%", work.jobs[job].location);
+
+            var formattedWorkDescription = HTMLworkDescription.replace("%data%", work.jobs[job].description);
+
+            $(".work-entry:last").append(formattedEmployerTitle);
+            $(".work-entry:last").append(formattedWorkDates);
+            $(".work-entry:last").append(formattedWorkLocation);
+            $(".work-entry:last").append(formattedWorkDescription);
+
+        }
+    }
+}
+
 var projects = {
     projects: [{
         "title": "Portfolio",
@@ -57,6 +122,28 @@ var projects = {
         ]
     }]
 };
+
+projects.display = function() {
+    if (projects.projects.length > 0) {
+        for (project in projects.projects) {
+            $("#projects").append(HTMLprojectStart);
+            var formattedProjectTitle = HTMLprojectTitle.replace("%data%", projects.projects[project].title);
+            var formattedProjectDates = HTMLprojectDates.replace("%data%", projects.projects[project].dates);
+            var formattedProjectDescription = HTMLprojectDescription.replace("%data%", projects.projects[project].description);
+
+            $(".project-entry:last").append(formattedProjectTitle);
+            $(".project-entry:last").append(formattedProjectDates);
+            $(".project-entry:last").append(formattedProjectDescription);
+
+            if (projects.projects[project].images.length > 0) {
+                for (image in projects.projects[project].images) {
+                    $(".project-entry:last").append(HTMLprojectImage.replace("%data%", projects.projects[project].images[image]));
+                }
+            }
+
+        }
+    }
+}
 
 var education = {
     "schools": [ {
@@ -102,312 +189,51 @@ var education = {
 
 };
 
-var formattedName = HTMLheaderName.replace("%data%", bio.name);
-var formattedRole = HTMLheaderRole.replace("%data%", bio.role);
+education.display = function() {
+     if (education.schools.length > 0) {
+        for (school in education.schools) {
+            $("#education").append(HTMLschoolStart);
+            var formattedSchoolName = HTMLschoolName.replace("%data%", education.schools[school].name);
+            var formattedSchoolLocation = HTMLschoolLocation.replace("%data%", education.schools[school].location);
+            var formattedSchoolDegree = HTMLschoolDegree.replace("%data%", education.schools[school].degree);
+            var formattedSchoolDate= HTMLschoolDates.replace("%data%", education.schools[school].dates);
+            var formattedSchoolMajor = HTMLschoolMajor.replace("%data%", education.schools[school].major);
 
-var formattedMobile = HTMLmobile.replace("%data%", bio.contacts.mobile);
-var formattedEmail = HTMLemail.replace("%data%", bio.contacts.eMail);
-var formattedTwitter = HTMLtwitter.replace("%data%", bio.contacts.twitter);
-var formattedGithub = HTMLgithub.replace("%data%", bio.contacts.githubURL);
-var formattedBlog = HTMLblog.replace("%data%", bio.contacts.blogURL);
-var formattedLocation = HTMLlocation.replace("%data%", bio.contacts.location);
-
-var formattedPictureURL = HTMLbioPic.replace("%data%", bio.pictureURL);
-var formattedWelcomeMessage = HTMLwelcomeMsg.replace("%data%", bio.welcomeMessage);
-
-$("#header").prepend(formattedWelcomeMessage);
-$("#header").prepend(formattedPictureURL);
-
-
-$("#header").prepend(formattedRole);
-$("#header").prepend(formattedName);
-
-$("#topContacts").append(formattedMobile);
-$("#topContacts").append(formattedEmail);
-$("#topContacts").append(formattedGithub);
-$("#topContacts").append(formattedTwitter);
-$("#topContacts").append(formattedBlog);
-$("#topContacts").append(formattedLocation);
-
-// for (var index = 0; index < bio.skills.length; index++) {
-//     $("#skills").append(HTMLskills.replace("%data%", bio.skills[index]));
-// }
-
-if (bio.skills.length > 0) {
-
-    $("#header").append(HTMLskillsStart);
-    for (index in bio.skills) {
-        $("#skills").append(HTMLskills.replace("%data%", bio.skills[index]));
-    }
-}
-
-function displayWork() {
-    if (work.jobs.length > 0) {
-        for (job in work.jobs) {
-            $("#workExperience").append(HTMLworkStart);
-            var formattedEmployer = HTMLworkEmployer.replace("%data%", work.jobs[job].employer);
-            var formattedTitle =  HTMLworkTitle.replace("%data%", work.jobs[job].title);
-            var formattedEmployerTitle = formattedEmployer + formattedTitle;
-
-            var formattedWorkDates = HTMLworkDates.replace("%data%", work.jobs[job].dates);
-            var formattedWorkLocation =  HTMLworkLocation.replace("%data%", work.jobs[job].location);
-
-            var formattedWorkDescription = HTMLworkDescription.replace("%data%", work.jobs[job].description);
-
-            $(".work-entry:last").append(formattedEmployerTitle);
-            $(".work-entry:last").append(formattedWorkDates);
-            $(".work-entry:last").append(formattedWorkLocation);
-            $(".work-entry:last").append(formattedWorkDescription);
+            $(".education-entry:last").append(formattedSchoolName);
+            $(".education-entry:last").append(formattedSchoolDegree);
+            $(".education-entry:last").append(formattedSchoolDate);
+            $(".education-entry:last").append(formattedSchoolLocation);
+            $(".education-entry:last").append(formattedSchoolMajor);
 
         }
     }
-};
 
-displayWork();
+    if (education.schools.length > 0) {
+        $("#education").append(HTMLonlineClasses);
+        for (onlineSchool in education.onlineCourses) {
+            $("#education").append(HTMLschoolStart);
+            var formattedClassTitle = HTMLonlineTitle.replace("%data%", education.onlineCourses[onlineSchool].title);
+            var formattedClassSchool = HTMLonlineSchool.replace("%data%", education.onlineCourses[onlineSchool].school);
+            var formattedClassDates = HTMLonlineDates.replace("%data%", education.onlineCourses[onlineSchool].dates);
+            var formattedClassURL= HTMLonlineURL.replace("%data%", education.onlineCourses[onlineSchool].url);
 
-// $("#main").append(internationalizeButton);
-// var inName = function() {
-//     var finalName = bio.name.trim();
-//     var splitName = finalName.split(" ");
-//     finalName = splitName[0][0].toUpperCase();
-//     finalName = finalName + splitName[0].slice(1).toLowerCase() + " ";
-//     finalName = finalName + splitName[1].toUpperCase();
-//     return finalName;
-// }
+            $(".education-entry:last").append(formattedClassTitle);
+            $(".education-entry:last").append(formattedClassSchool);
+            $(".education-entry:last").append(formattedClassDates);
+            $(".education-entry:last").append(formattedClassURL);
+        }
+    }
+}
+
+bio.display();
+work.display();
+projects.display();
+education.display();
 
 $("#mapDiv").append(googleMap);
-
-projects.display = function() {
-    if (projects.projects.length > 0) {
-        for (project in projects.projects) {
-            $("#projects").append(HTMLprojectStart);
-            var formattedProjectTitle = HTMLprojectTitle.replace("%data%", projects.projects[project].title);
-            var formattedProjectDates = HTMLprojectDates.replace("%data%", projects.projects[project].dates);
-            var formattedProjectDescription = HTMLprojectDescription.replace("%data%", projects.projects[project].description);
-
-            $(".project-entry:last").append(formattedProjectTitle);
-            $(".project-entry:last").append(formattedProjectDates);
-            $(".project-entry:last").append(formattedProjectDescription);
-
-            if (projects.projects[project].images.length > 0) {
-                for (image in projects.projects[project].images) {
-                    $(".project-entry:last").append(HTMLprojectImage.replace("%data%", projects.projects[project].images[image]));
-                }
-            }
-
-        }
-    }
-}
-
-projects.display();
 
 $(document).click(function(loc) {
     var x = loc.pageX;
     var y = loc.pageY;
     logClicks(x,y);
 });
-
-
-
-// function getRelationship(x, y) {
-//     var isXNumber = (x % 1 === 0);
-//     var isYNumber = (y % 1 === 0);
-//     var rel = "";
-
-//     if (!isXNumber && !isYNumber) {
-//         rel = "Can't compare relationships because " + x + " and " + y + " are not numbers";
-//     } else if (!isXNumber) {
-//         rel = "Can't compare relationships because " + x + " is not a number";
-//     } else if (!isYNumber) {
-//         rel = "Can't compare relationships because " + y + " is not a number";
-//     } else {
-//         if (x > y) {
-//             rel = ">";
-//         } else if (x < y) {
-//             rel = "<";
-//         } else {
-//             rel = "=";
-//         }
-//     }
-//     return rel;
-// };
-
-// // Try logging these functions to test your code!
-// console.log(getRelationship(1,4));
-// console.log(getRelationship(1,1));
-// console.log(getRelationship("that",2));
-// console.log(getRelationship("this"," something else"));
-// console.log(getRelationship(3));
-// console.log(getRelationship("hi"));
-// console.log(getRelationship(NaN));
-// console.log(getRelationship(NaN, undefined));
-
-// var moonWalkers = [
-//   "Neil Armstrong",
-//   "Buzz Aldrin",
-//   "Pete Conrad",
-//   "Alan Bean",
-//   "Alan Shepard",
-//   "Edgar Mitchell",
-//   "David Scott",
-//   "James Irwin",
-//   "John Young",
-//   "Charles Duke",
-//   "Eugene Cernan",
-//   "Harrison Schmitt"
-// ];
-
-// function alphabetizer(names) {
-//     for (name in names) {
-//         names[name] = flipper(names[name]);
-//     }
-
-//     return names.sort();
-// }
-
-// function flipper(name) {
-//     var splitName = name.trim().split(" ");
-//     return splitName[1] + ", " + splitName[0];
-
-// }
-
-// // Try logging your results to test your code!
-// console.log(alphabetizer(moonWalkers));
-
-
-
-
-// Iterate through the localizedRuleNames in ruleResults and
-// return an array of their strings.
-// function ruleList(results) {
-//     var ruleNames = [];
-//     for (var rule in results.formattedResults.ruleResults) {
-//         for (var prop in results.formattedResults.ruleResults[rule]) {
-//             if (prop === "localizedRuleName") {
-//                 ruleNames.push(results.formattedResults.ruleResults[rule][prop]);
-//             }
-//         }
-//     }
-
-//     return ruleNames;
-// }
-
-
-// Iterate through pageStats in the psiResults object and
-// return the total number of bytes to load the website.
-// function totalBytes(results) {
-//     var bytes = 0;
-//     for (var stat in results.pageStats) {
-//         if (stat.indexOf("Bytes") > -1) {
-//             bytes += parseInt(results.pageStats[stat]);
-//         }
-//     }
-
-//     return bytes;
-// }
-
-// Below, you'll find a sample PS Insights JSON
-// and two console.log statements to help you test your code!
-
-// psinsights = {
-//  "kind": "pagespeedonline#result",
-//  "id": "/speed/pagespeed",
-//  "responseCode": 200,
-//  "title": "PageSpeed Home",
-//  "score": 90,
-//  "pageStats": {
-//   "numberResources": 22,
-//   "numberHosts": 7,
-//   "totalRequestBytes": "2761",
-//   "numberStaticResources": 16,
-//   "htmlResponseBytes": "91981",
-//   "cssResponseBytes": "37728",
-//   "imageResponseBytes": "13909",
-//   "javascriptResponseBytes": "247214",
-//   "otherResponseBytes": "8804",
-//   "numberJsResources": 6,
-//   "numberCssResources": 2
-//  },
-//  "formattedResults": {
-//   "locale": "en_US",
-//   "ruleResults": {
-//     "AvoidBadRequests": {
-//       "localizedRuleName": "Avoid bad requests",
-//       "ruleImpact": 0.0
-//     },
-//     "MinifyJavaScript": {
-//       "localizedRuleName": "Minify JavaScript",
-//       "ruleImpact": 0.1417,
-//       "urlBlocks": [
-//       {
-//         "header": {
-//        "format": "Minifying the following JavaScript resources could reduce their size by $1 ($2% reduction).",
-//        "args": [
-//         {
-//          "type": "BYTES",
-//          "value": "1.3KiB"
-//         },
-//         {
-//          "type": "INT_LITERAL",
-//          "value": "0"
-//         }
-//        ]
-//         },
-//         "urls": [
-//         {
-//           "result": {
-//          "format": "Minifying $1 could save $2 ($3% reduction).",
-//          "args": [
-//           {
-//            "type": "URL",
-//            "value": "http://code.google.com/js/codesite_tail.pack.04102009.js"
-//           },
-//           {
-//            "type": "BYTES",
-//            "value": "717B"
-//           },
-//           {
-//            "type": "INT_LITERAL",
-//            "value": "1"
-//           }
-//          ]
-//         }
-//        },
-//        {
-//         "result": {
-//          "format": "Minifying $1 could save $2 ($3% reduction).",
-//          "args": [
-//           {
-//            "type": "URL",
-//            "value": "http://www.gmodules.com/ig/proxy?url\u003dhttp%3A%2F%2Fjqueryjs.googlecode.com%2Ffiles%2Fjquery-1.2.6.min.js"
-//           },
-//           {
-//            "type": "BYTES",
-//            "value": "258B"
-//           },
-//           {
-//            "type": "INT_LITERAL",
-//            "value": "0"
-//           }
-//          ]
-//         }
-//        }
-//       ]
-//      }
-//     ]
-//    },
-//    "SpriteImages": {
-//     "localizedRuleName": "Combine images into CSS sprites",
-//     "ruleImpact": 0.0
-//    }
-//   }
-//  },
-//  "version": {
-//   "major": 1,
-//   "minor": 11
-//  }
-// };
-
-// // Try logging the outputs below to test your code!
-// console.log(ruleList(psinsights));
-// console.log(totalBytes(psinsights));
